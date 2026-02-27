@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.panel-card {
+  border-radius: 1rem;
+  border: 1px solid var(--surface-border);
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  padding: 1rem;
+}
+
+.panel-header {
+  margin-bottom: 0.85rem;
+}
+
+.panel-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.panel-subtitle {
+  margin: 0.3rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+}

@@ -1,0 +1,125 @@
+<article class="help-layout">
+  <aside class="toc-card shadow-stroke">
+    <h2 class="panel-title"><i class="pi pi-list"></i> Table of Contents</h2>
+    <nav class="toc-links">
+      <button type="button" class="toc-link" (click)="scrollToSection('overview')">Overview</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('requirements')">Requirements</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('onboarding')">Onboarding Steps</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('weather-api')">WeatherAPI Key</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('meshy-api')">Meshy API + Referral</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('latlng-api')">LatLng API</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('installers')">Build EXE + MSI</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('runtime')">Runtime Behavior</button>
+      <button type="button" class="toc-link" (click)="scrollToSection('credits')">Credits</button>
+    </nav>
+  </aside>
+
+  <section class="content-column">
+    <section id="overview" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <header class="panel-header compact">
+        <h2 class="panel-title"><i class="pi pi-question-circle"></i> Overview</h2>
+      </header>
+      <p>
+        Mâlie renders a live wallpaper on your selected monitor (primary by default) using WeatherAPI weather data,
+        a local Three.js procedural scene pipeline, and optional Meshy/LatLng integrations for POI model generation.
+      </p>
+      <p>
+        The animated background mode uses a Codex-inspired multi-layer motion shader blended with your chosen wallpaper color.
+      </p>
+    </section>
+
+    <section id="requirements" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Requirements</h3>
+      <ul class="help-list">
+        <li>Windows 11, .NET 8 SDK, and WebView2 runtime.</li>
+        <li>Node.js + npm for Angular/PrimeNG UI build.</li>
+        <li>Required API keys: WeatherAPI, Meshy, and LatLng server key.</li>
+      </ul>
+    </section>
+
+    <section id="onboarding" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Onboarding Steps</h3>
+      <ol class="help-list numbered">
+        <li>Set location (city, address, or ZIP), or use current location.</li>
+        <li>Provide WeatherAPI, Meshy, and LatLng keys.</li>
+        <li>Load POIs and download/import at least one Meshy GLB model.</li>
+        <li>Finish onboarding to connect the wallpaper renderer.</li>
+      </ol>
+    </section>
+
+    <section id="weather-api" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">WeatherAPI Key</h3>
+      <ul class="help-list">
+        <li>Sign up: <a href="https://www.weatherapi.com/signup.aspx" target="_blank" rel="noopener noreferrer">weatherapi.com/signup.aspx</a></li>
+        <li>Docs: <a href="https://www.weatherapi.com/docs/" target="_blank" rel="noopener noreferrer">weatherapi.com/docs</a></li>
+        <li>Paste the key in Settings or onboarding API key step.</li>
+      </ul>
+    </section>
+
+    <section id="meshy-api" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Meshy API + Referral</h3>
+      <ul class="help-list">
+        <li>
+          Referral signup link:
+          <a href="https://www.meshy.ai/?utm_source=meshy&utm_medium=referral-program&utm_content=ZEU7XX&share_type=invite-friends" target="_blank" rel="noopener noreferrer">
+            meshy.ai referral invite
+          </a>
+        </li>
+        <li>This link is a referral link.</li>
+        <li>Typical listed referral benefits include free Pro/trial opportunities and possible free credit opportunities (terms apply).</li>
+        <li>Meshy referral program summary: <a href="https://www.meshy.ai/referral" target="_blank" rel="noopener noreferrer">meshy.ai/referral</a></li>
+        <li>Approximate cost guidance: one POI model can consume about 100 Meshy credits, depending on generation path/retries.</li>
+      </ul>
+    </section>
+
+    <section id="latlng-api" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">LatLng API</h3>
+      <ul class="help-list">
+        <li>Sign up: <a href="https://www.latlng.work/" target="_blank" rel="noopener noreferrer">latlng.work</a></li>
+        <li>Create a <strong>server key</strong> and paste it in Settings or onboarding.</li>
+        <li>Used for geocoding + nearby POIs before fallback sources.</li>
+      </ul>
+    </section>
+
+    <section id="installers" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Build EXE + MSI</h3>
+      <p>Generate both installers with one command:</p>
+      <pre><code>.\build-installers.ps1 -Runtime win-x64 -Version 1.0.0 -AcceptWixEula</code></pre>
+      <ul class="help-list">
+        <li>EXE installer uses Inno Setup (`ISCC.exe`).</li>
+        <li>MSI installer uses WiX CLI (`wix.exe`, v7 recommended).</li>
+        <li>Optional: <code>-SkipUiBuild</code>, <code>-SkipClean</code>, <code>-AcceptWixEula</code>.</li>
+        <li>OSMF/EULA docs: <a href="https://docs.firegiant.com/wix/osmf/" target="_blank" rel="noopener noreferrer">docs.firegiant.com/wix/osmf</a></li>
+        <li>One-time WiX EULA acceptance: <code>wix eula accept wix7</code>.</li>
+        <li>Direct WiX build form: <code>wix build -acceptEula wix7 ...</code>.</li>
+        <li>Sun icon is used for setup EXE branding and installed Start Menu/Desktop shortcuts.</li>
+        <li>Outputs are written to <code>installer\dist\</code>.</li>
+      </ul>
+    </section>
+
+    <section id="runtime" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Runtime Behavior</h3>
+      <ul class="help-list">
+        <li>App minimizes to tray. To fully quit, right-click tray icon and choose <strong>Exit</strong>.</li>
+        <li>Settings close does not terminate process.</li>
+        <li>Logs are written to <code>%LOCALAPPDATA%\Malie\logs\app-debug.log</code>.</li>
+      </ul>
+    </section>
+
+    <section id="credits" class="panel-card shadow-stroke section-ripple" tabindex="-1" pRipple>
+      <h3 class="section-title">Credits</h3>
+      <ul class="help-list">
+        <li>
+          Weather icons by Bas Milius:
+          <a href="https://github.com/basmilius/weather-icons" target="_blank" rel="noopener noreferrer">github.com/basmilius/weather-icons</a>
+        </li>
+        <li>
+          Weather data by WeatherAPI:
+          <a href="https://www.weatherapi.com/" target="_blank" rel="noopener noreferrer">weatherapi.com</a>
+        </li>
+      </ul>
+    </section>
+  </section>
+</article>
+
+<p-scrolltop [threshold]="240" icon="pi pi-arrow-up" />

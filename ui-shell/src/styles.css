@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+@import "primeicons/primeicons.css";
+
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+:root {
+  --shadow-stroke: 0px 1px 2px 0px rgba(164, 172, 185, 0.24), 0px 0px 0px 1px rgba(18, 55, 105, 0.08);
+  --border: var(--p-surface-200);
+  --background: var(--p-surface-0);
+  --foreground: var(--p-surface-950);
+  --surface-ground: #ffffff;
+  --surface-card: var(--p-surface-50);
+  --surface-border: var(--p-content-border-color);
+  --surface-hover: var(--p-content-hover-background);
+  --text-color: var(--p-text-color);
+  --text-muted-color: var(--p-text-muted-color);
+  --transition-duration: var(--p-transition-duration);
+}
+
+.app-dark {
+  --shadow-stroke: 0px 1px 2px 0px rgba(164, 172, 185, 0.12), 0px 0px 0px 1px #27272a;
+  --border: var(--p-surface-800);
+  --background: var(--p-surface-900);
+  --foreground: var(--p-surface-0);
+  --surface-ground: var(--p-surface-950);
+  --surface-card: var(--p-surface-900);
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Archivo, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
+}
+
+.shadow-stroke {
+  box-shadow: var(--shadow-stroke);
+}

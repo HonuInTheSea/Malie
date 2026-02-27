@@ -1,0 +1,32 @@
+<article class="panel-card shadow-stroke">
+  <header class="panel-header">
+    <div>
+      <h2 class="panel-title"><i class="pi pi-box"></i> Meshy Models</h2>
+      <p class="panel-subtitle">Manage cached POI models, queue new generations, and run custom prompts.</p>
+    </div>
+  </header>
+
+  <app-meshy-model-viewer
+    [location]="shell.location()"
+    [rows]="shell.meshyManagerRows()"
+    [status]="shell.meshyManagerStatus()"
+    [queueStatus]="shell.meshyManagerQueueStatus()"
+    [logs]="shell.meshyManagerLogs()"
+    [rotationMinutes]="shell.meshyManagerRotationMinutes()"
+    [isBusy]="shell.meshyManagerBusy()"
+    [progressPercent]="shell.meshyManagerProgressPercent()"
+    [progressText]="shell.meshyManagerProgressText()"
+    [customPromptMaxLength]="800"
+    (refreshRequested)="shell.refreshMeshyManager()"
+    (refreshPoisRequested)="shell.refreshOnboardingPois()"
+    (queuePoiRequested)="shell.queueMeshyPoi($event)"
+    (downloadPoiRequested)="shell.downloadMeshyPoiNow($event)"
+    (setActiveModelRequested)="shell.setMeshyActiveModel($event)"
+    (exportModelRequested)="shell.exportMeshyCachedModel($event)"
+    (deleteModelRequested)="shell.deleteMeshyCachedModel($event)"
+    (renamePoiRequested)="shell.renameMeshyPoi($event)"
+    (customPromptRequested)="shell.submitMeshyCustomPrompt($event)"
+    (rotationMinutesApplied)="shell.applyMeshyRotationMinutes($event)"
+    (importGlbRequested)="shell.importMeshyGlb($event)"
+  />
+</article>

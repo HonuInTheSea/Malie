@@ -1,0 +1,315 @@
+<article class="panel-card shadow-stroke">
+  <header class="panel-header">
+    <div>
+      <h2 class="panel-title"><i class="pi pi-desktop"></i> Wallpaper</h2>
+      <p class="panel-subtitle">Adjust GLB orientation used by the live wallpaper renderer.</p>
+    </div>
+  </header>
+
+  <div class="orientation-grid">
+    <label class="mini-field">
+      <span>Rotate X (deg)</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().rotationXDegrees"
+        (ngModelChange)="shell.updateOrientationValue('rotationXDegrees', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Rotate Y (deg)</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().rotationYDegrees"
+        (ngModelChange)="shell.updateOrientationValue('rotationYDegrees', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Rotate Z (deg)</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().rotationZDegrees"
+        (ngModelChange)="shell.updateOrientationValue('rotationZDegrees', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Scale</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().scale"
+        (ngModelChange)="shell.updateOrientationValue('scale', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Offset X</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().offsetX"
+        (ngModelChange)="shell.updateOrientationValue('offsetX', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Offset Y</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().offsetY"
+        (ngModelChange)="shell.updateOrientationValue('offsetY', $event)"
+      />
+    </label>
+    <label class="mini-field">
+      <span>Offset Z</span>
+      <input
+        type="number"
+        [ngModel]="shell.glbOrientation().offsetZ"
+        (ngModelChange)="shell.updateOrientationValue('offsetZ', $event)"
+      />
+    </label>
+  </div>
+
+  <div class="background-grid">
+    <label class="form-label" for="wallpaper-background-color">Wallpaper Background Color</label>
+    <div id="wallpaper-background-color" class="color-picker-block">
+      <p-colorpicker
+        [inline]="true"
+        format="hex"
+        [ngModel]="shell.wallpaperBackgroundColor()"
+        (ngModelChange)="shell.updateWallpaperBackgroundColor($event)"
+      />
+      <div class="color-preview" [style.backgroundColor]="shell.wallpaperBackgroundColor()">
+        <span>{{ shell.wallpaperBackgroundColor() }}</span>
+      </div>
+    </div>
+
+    <label class="form-label" for="wallpaper-background-image">Wallpaper Background Media (Image/Video)</label>
+    <div class="background-image-block">
+      <input
+        id="wallpaper-background-image"
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/bmp,video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska,.mkv"
+        class="image-input"
+        (change)="shell.onWallpaperBackgroundImageSelected($event)"
+      />
+      <div class="image-status">
+        <span>{{ shell.wallpaperBackgroundImageFileName() || 'No background media selected' }}</span>
+        <p-button
+          label="Clear Background Media"
+          icon="pi pi-times"
+          severity="secondary"
+          (onClick)="shell.clearWallpaperBackgroundImage()"
+        />
+      </div>
+    </div>
+
+    <div class="background-fit-block">
+      <label class="form-label">Background Display Mode</label>
+      <div class="fit-options">
+        <div class="fit-option">
+          <p-radiobutton
+            inputId="bg-fit-original"
+            name="wallpaperBackgroundDisplayMode"
+            value="Original"
+            [ngModel]="shell.wallpaperBackgroundDisplayMode()"
+            (ngModelChange)="shell.updateWallpaperBackgroundDisplayMode($event)"
+          />
+          <label for="bg-fit-original">Original</label>
+        </div>
+        <div class="fit-option">
+          <p-radiobutton
+            inputId="bg-fit-fill"
+            name="wallpaperBackgroundDisplayMode"
+            value="Fill"
+            [ngModel]="shell.wallpaperBackgroundDisplayMode()"
+            (ngModelChange)="shell.updateWallpaperBackgroundDisplayMode($event)"
+          />
+          <label for="bg-fit-fill">Fill</label>
+        </div>
+        <div class="fit-option">
+          <p-radiobutton
+            inputId="bg-fit-stretch"
+            name="wallpaperBackgroundDisplayMode"
+            value="Stretch"
+            [ngModel]="shell.wallpaperBackgroundDisplayMode()"
+            (ngModelChange)="shell.updateWallpaperBackgroundDisplayMode($event)"
+          />
+          <label for="bg-fit-stretch">Stretch</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="animated-bg-toggle">
+      <div>
+        <label class="form-label" for="ai-animated-background-toggle">AI Animated Background</label>
+        <p class="toggle-hint">Performance may drop due to the use of hardware acceleration.</p>
+      </div>
+      <p-toggleswitch
+        inputId="ai-animated-background-toggle"
+        [ngModel]="shell.useAnimatedAiBackground()"
+        (ngModelChange)="shell.updateWallpaperAnimatedBackground($event)"
+      />
+    </div>
+
+    <div class="text-font-grid">
+      <label class="mini-field">
+        <span>Time Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().timeFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('timeFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>Location Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().locationFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('locationFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>Date Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().dateFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('dateFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>Temperature Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().temperatureFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('temperatureFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>Summary Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().summaryFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('summaryFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>POI Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().poiFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('poiFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+      <label class="mini-field">
+        <span>Alerts Font</span>
+        <select
+          class="font-select"
+          [ngModel]="shell.wallpaperTextStyle().alertsFontFamily"
+          (ngModelChange)="shell.updateWallpaperFontFamily('alertsFontFamily', $event)"
+        >
+          @for (font of shell.availableSystemFonts(); track font) {
+            <option [value]="font" [style.font-family]="font">{{ font }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="text-size-grid">
+      <label class="mini-field">
+        <span>Time Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().timeFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('timeFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>Location Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().locationFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('locationFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>Date Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().dateFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('dateFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>Temperature Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().temperatureFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('temperatureFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>Summary Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().summaryFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('summaryFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>POI Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().poiFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('poiFontSize', $event)"
+        />
+      </label>
+      <label class="mini-field">
+        <span>Alerts Size (px)</span>
+        <input
+          type="number"
+          min="8"
+          max="144"
+          [ngModel]="shell.wallpaperTextStyle().alertsFontSize"
+          (ngModelChange)="shell.updateWallpaperTextSize('alertsFontSize', $event)"
+        />
+      </label>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <p-button label="Apply Orientation" icon="pi pi-check" (onClick)="shell.applySettings()" />
+    <p-button label="Refresh Wallpaper" icon="pi pi-refresh" severity="secondary" (onClick)="shell.refreshNow()" />
+  </div>
+</article>

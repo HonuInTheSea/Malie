@@ -1,0 +1,134 @@
+<div class="app-shell">
+  <div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed()">
+    <aside class="layout-sidebar shadow-stroke">
+      <div class="sidebar-header">
+        <div class="sidebar-header-row">
+          <a
+            class="logo"
+            href="javascript:void(0)"
+            [pTooltip]="sidebarCollapsed() ? 'Mâlie' : ''"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <span class="logo-mark"><i class="pi pi-sun"></i></span>
+            <span class="app-name">Mâlie</span>
+          </a>
+          <button
+            type="button"
+            class="sidebar-collapse-btn"
+            (click)="toggleSidebarCollapsed()"
+            [pTooltip]="sidebarCollapsed() ? 'Expand Sidebar' : 'Collapse Sidebar'"
+            tooltipPosition="left"
+          >
+            <i class="pi" [class.pi-angle-right]="sidebarCollapsed()" [class.pi-angle-left]="!sidebarCollapsed()"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="layout-menu-container">
+        <div class="menu-group">
+          <div class="menu-group-title">Workspace</div>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/dashboard"
+            routerLinkActive="menu-item-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [pTooltip]="'Dashboard'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/settings"
+            routerLinkActive="menu-item-active"
+            [pTooltip]="'Settings'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-sliders-h"></i>
+            <span>Settings</span>
+          </a>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/meshy-models"
+            routerLinkActive="menu-item-active"
+            [pTooltip]="'Meshy Models'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-box"></i>
+            <span>Meshy Models</span>
+          </a>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/wallpaper"
+            routerLinkActive="menu-item-active"
+            [pTooltip]="'Wallpaper'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-desktop"></i>
+            <span>Wallpaper</span>
+          </a>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/status"
+            routerLinkActive="menu-item-active"
+            [pTooltip]="'Status'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-chart-line"></i>
+            <span>Status</span>
+          </a>
+          <a
+            class="menu-item menu-item-button"
+            routerLink="/help"
+            routerLinkActive="menu-item-active"
+            [pTooltip]="'Help'"
+            tooltipPosition="right"
+            [tooltipDisabled]="!sidebarCollapsed()"
+          >
+            <i class="pi pi-question-circle"></i>
+            <span>Help</span>
+          </a>
+        </div>
+
+        <div class="menu-group status-group">
+          <div class="menu-group-title">Bridge</div>
+          <div class="bridge-status">{{ bridgeStatus() }}</div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button
+          class="menu-item menu-item-button menu-item-danger"
+          type="button"
+          (click)="resetApplication()"
+          [pTooltip]="'Reset Application'"
+          tooltipPosition="right"
+          [tooltipDisabled]="!sidebarCollapsed()"
+        >
+          <i class="pi pi-trash"></i>
+          <span>Reset Application</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="layout-main">
+      <section class="dashboard-toolbar">
+        <div class="topbar-theme-toggle">
+          <span>Dark mode</span>
+          <p-toggleswitch inputId="theme-toggle" [ngModel]="darkMode()" (ngModelChange)="darkMode.set($event)" />
+        </div>
+      </section>
+
+      <section class="route-view">
+        <router-outlet />
+      </section>
+    </main>
+  </div>
+</div>

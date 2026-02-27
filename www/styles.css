@@ -1,0 +1,141 @@
+:root {
+    --bg-a: #4c8ee8;
+    --bg-b: #7bc6a4;
+    --bg-c: #f2c879;
+    --hud-fg: #ffffff;
+    --hud-soft: #e7f5ff;
+    --hud-alert: #ffe4e4;
+    --hud-shadow: 0 1px 1px rgba(0, 0, 0, 0.28), 0 2px 9px rgba(0, 0, 0, 0.18);
+    --hud-time-font-family: "Segoe UI", sans-serif;
+    --hud-location-font-family: "Segoe UI", sans-serif;
+    --hud-date-font-family: "Segoe UI", sans-serif;
+    --hud-temperature-font-family: "Segoe UI", sans-serif;
+    --hud-summary-font-family: "Segoe UI", sans-serif;
+    --hud-poi-font-family: "Segoe UI", sans-serif;
+    --hud-alert-font-family: "Segoe UI", sans-serif;
+    --hud-time-size: 58px;
+    --hud-location-size: 54px;
+    --hud-date-size: 14px;
+    --hud-temperature-size: 34px;
+    --hud-summary-size: 14px;
+    --hud-poi-size: 14px;
+    --hud-alert-size: 14px;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: var(--bg-a);
+    font-family: "Segoe UI", sans-serif;
+    color: #ffffff;
+}
+
+canvas {
+    display: block;
+}
+
+#hud {
+    position: fixed;
+    left: 50%;
+    top: 14px;
+    transform: translateX(-50%);
+    min-width: 360px;
+    max-width: 80vw;
+    padding: 8px 20px 8px 20px;
+    z-index: 10;
+    pointer-events: none;
+    text-align: center;
+    color: var(--hud-fg);
+    text-shadow: var(--hud-shadow);
+}
+
+#timeText {
+    font-family: var(--hud-time-font-family);
+    font-size: var(--hud-time-size);
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    line-height: 1.0;
+    margin-bottom: 2px;
+}
+
+#location {
+    font-family: var(--hud-location-font-family);
+    font-size: var(--hud-location-size);
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    line-height: 1.0;
+    margin-bottom: 2px;
+}
+
+#weatherIcon {
+    display: block;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 1px auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.25));
+}
+
+#dateText {
+    font-family: var(--hud-date-font-family);
+    font-size: var(--hud-date-size);
+    opacity: 0.95;
+    margin-bottom: 0;
+}
+
+#temperatureText {
+    font-family: var(--hud-temperature-font-family);
+    font-size: var(--hud-temperature-size);
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+#summary,
+#poiText,
+#alerts {
+    font-size: var(--hud-summary-size);
+    line-height: 1.35;
+    opacity: 0.96;
+}
+
+#summary {
+    font-family: var(--hud-summary-font-family);
+}
+
+#poiText {
+    font-family: var(--hud-poi-font-family);
+    margin-top: 2px;
+    color: var(--hud-soft);
+    font-size: var(--hud-poi-size);
+}
+
+#alerts {
+    font-family: var(--hud-alert-font-family);
+    margin-top: 4px;
+    color: var(--hud-alert);
+    font-size: var(--hud-alert-size);
+}
+
+#renderDebug {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    z-index: 20;
+    pointer-events: none;
+    max-width: 56vw;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.46);
+    color: #e8f7ff;
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 12px;
+    line-height: 1.25;
+    white-space: pre-wrap;
+    text-shadow: none;
+}

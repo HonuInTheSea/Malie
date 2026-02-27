@@ -1,0 +1,91 @@
+:host {
+  display: block;
+}
+
+.form-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.action-row {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.selected-models {
+  max-height: 7rem;
+  overflow: auto;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.7rem;
+  padding: 0.55rem;
+  font-size: 0.75rem;
+}
+
+:host .key-link {
+  display: inline-block;
+  margin-top: -0.2rem;
+  margin-bottom: 0.1rem;
+  font-size: 0.78rem;
+}
+
+.referral-note {
+  margin: 0 0 0.35rem;
+  font-size: 0.76rem;
+  color: var(--text-muted-color);
+  line-height: 1.35;
+}
+
+.poi-list {
+  max-height: 8rem;
+  overflow: auto;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.7rem;
+  padding: 0.55rem;
+  font-size: 0.8rem;
+}
+
+.tips-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+:host ::ng-deep .p-dialog {
+  border-radius: 1rem;
+}
+
+:host ::ng-deep .p-dialog-content {
+  padding-top: 0.5rem;
+}
+
+:host ::ng-deep .p-stepper {
+  background: transparent;
+}
+
+:host ::ng-deep .onboarding-dialog-animated.p-dialog-enter-active {
+  animation: demo-dialog-in 500ms ease-out;
+}
+
+:host ::ng-deep .onboarding-dialog-animated.p-dialog-leave-active {
+  animation: demo-dialog-out 300ms ease-in;
+}
+
+@keyframes demo-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10%) scale(1.1);
+    filter: blur(10px);
+  }
+}
+
+@keyframes demo-dialog-out {
+  to {
+    opacity: 0;
+    transform: translateY(200%) rotate(-90deg);
+  }
+}
+
+

@@ -1,0 +1,104 @@
+<app-onboarding-dialog
+  [visible]="shell.showOnboarding()"
+  [step]="shell.onboardingStep()"
+  [location]="shell.location()"
+  [meshyApiKey]="shell.meshyApiKey()"
+  [weatherApiKey]="shell.weatherApiKey()"
+  [latLngApiKey]="shell.latLngApiKey()"
+  [onboardingPois]="shell.onboardingPois()"
+  [meshyRows]="shell.meshyManagerRows()"
+  [meshyStatus]="shell.meshyManagerStatus()"
+  [meshyQueueStatus]="shell.meshyManagerQueueStatus()"
+  [meshyLogs]="shell.meshyManagerLogs()"
+  [meshyBusy]="shell.meshyManagerBusy()"
+  [meshyRotationMinutes]="shell.meshyManagerRotationMinutes()"
+  [meshyProgressPercent]="shell.meshyManagerProgressPercent()"
+  [meshyProgressText]="shell.meshyManagerProgressText()"
+  (stepChange)="shell.onOnboardingStepChange($event)"
+  (locationChange)="shell.location.set($event)"
+  (meshyApiKeyChange)="shell.meshyApiKey.set($event)"
+  (weatherApiKeyChange)="shell.weatherApiKey.set($event)"
+  (latLngApiKeyChange)="shell.latLngApiKey.set($event)"
+  (useCurrentLocation)="shell.useCurrentLocation()"
+  (meshyRefreshRequested)="shell.refreshMeshyManager()"
+  (onboardingPoisRefreshRequested)="shell.refreshOnboardingPois()"
+  (meshyQueuePoiRequested)="shell.queueMeshyPoi($event)"
+  (meshyDownloadPoiRequested)="shell.downloadMeshyPoiNow($event)"
+  (meshySetActiveRequested)="shell.setMeshyActiveModel($event)"
+  (meshyExportRequested)="shell.exportMeshyCachedModel($event)"
+  (meshyDeleteRequested)="shell.deleteMeshyCachedModel($event)"
+  (meshyRenameRequested)="shell.renameMeshyPoi($event)"
+  (meshyCustomPromptRequested)="shell.submitMeshyCustomPrompt($event)"
+  (meshyRotationMinutesApplied)="shell.applyMeshyRotationMinutes($event)"
+  (meshyImportRequested)="shell.importMeshyGlb($event)"
+  (next)="shell.nextOnboardingStep()"
+  (previous)="shell.previousOnboardingStep()"
+  (finish)="shell.finishOnboarding()"
+/>
+
+<section class="stats-grid">
+  <article class="stat-card shadow-stroke">
+    <span class="stat-icon"><i class="pi pi-map-marker"></i></span>
+    <div>
+      <div class="stat-label">Location</div>
+      <div class="stat-value">
+        {{ shell.hostStateHydrated() ? (shell.location() || 'Not configured') : 'Initializing...' }}
+      </div>
+    </div>
+  </article>
+  <article class="stat-card shadow-stroke">
+    <span class="stat-icon"><i class="pi pi-box"></i></span>
+    <div>
+      <div class="stat-label">Cached Meshy Models</div>
+      <div class="stat-value">{{ cachedMeshyModelCount() }}</div>
+    </div>
+  </article>
+  <article class="stat-card shadow-stroke">
+    <span class="stat-icon"><i class="pi pi-clock"></i></span>
+    <div>
+      <div class="stat-label">Last Updated</div>
+      <div class="stat-value">{{ shell.lastUpdatedText() }}</div>
+    </div>
+  </article>
+</section>
+
+<section class="content-grid">
+  <article class="panel-card shadow-stroke">
+    <header class="panel-header">
+      <div>
+        <h2 class="panel-title"><i class="pi pi-bolt"></i> Quick Actions</h2>
+        <p class="panel-subtitle">Open a workspace area from here or use the left menu.</p>
+      </div>
+    </header>
+    <div class="quick-actions">
+      <p-button label="Open Settings" icon="pi pi-sliders-h" severity="secondary" routerLink="/settings" />
+      <p-button label="Open Meshy Models" icon="pi pi-box" severity="secondary" routerLink="/meshy-models" />
+      <p-button label="Open Wallpaper" icon="pi pi-desktop" severity="secondary" routerLink="/wallpaper" />
+      <p-button label="Open Status" icon="pi pi-chart-line" severity="secondary" routerLink="/status" />
+    </div>
+  </article>
+
+  <article class="panel-card shadow-stroke">
+    <header class="panel-header">
+      <div>
+        <h2 class="panel-title"><i class="pi pi-check-circle"></i> Configuration Readiness</h2>
+        <p class="panel-subtitle">All items should be complete before connecting wallpaper updates.</p>
+      </div>
+    </header>
+    <ul class="check-list">
+      <li [class.ready]="shell.hasLocation()">
+        <i class="pi" [class.pi-check]="shell.hasLocation()" [class.pi-times]="!shell.hasLocation()"></i>
+        <span>Location set</span>
+      </li>
+      <li [class.ready]="shell.hasApiKeys()">
+        <i class="pi" [class.pi-check]="shell.hasApiKeys()" [class.pi-times]="!shell.hasApiKeys()"></i>
+        <span>All API keys set</span>
+      </li>
+      <li [class.ready]="cachedMeshyModelCount() > 0">
+        <i class="pi" [class.pi-check]="cachedMeshyModelCount() > 0" [class.pi-times]="cachedMeshyModelCount() === 0"></i>
+        <span>At least one cached Meshy model available</span>
+      </li>
+    </ul>
+    <p class="status-line">{{ shell.statusText() }}</p>
+  </article>
+</section>

@@ -1,0 +1,93 @@
+<article class="panel-card shadow-stroke">
+  <header class="panel-header">
+    <div>
+      <h2 class="panel-title"><i class="pi pi-sliders-h"></i> Settings</h2>
+      <p class="panel-subtitle">Location, API keys, and temperature scale.</p>
+    </div>
+  </header>
+
+  <div class="form-grid">
+    <label class="form-label" for="location">Location</label>
+    <input
+      id="location"
+      type="text"
+      pInputText
+      [ngModel]="shell.location()"
+      (ngModelChange)="shell.location.set($event)"
+      placeholder="City, address, or ZIP"
+    />
+    <div class="action-row">
+      <p-button label="Use Current Location" icon="pi pi-map-marker" severity="secondary" (onClick)="shell.useCurrentLocation()" />
+    </div>
+
+    <label class="form-label" for="meshy-api-key">Meshy API Key</label>
+    <input
+      id="meshy-api-key"
+      type="text"
+      pInputText
+      [ngModel]="shell.meshyApiKey()"
+      (ngModelChange)="shell.meshyApiKey.set($event)"
+      placeholder="Meshy API key"
+    />
+
+    <label class="form-label" for="weather-api-key">Weather API Key</label>
+    <input
+      id="weather-api-key"
+      type="text"
+      pInputText
+      [ngModel]="shell.weatherApiKey()"
+      (ngModelChange)="shell.weatherApiKey.set($event)"
+      placeholder="WeatherAPI key"
+    />
+
+    <label class="form-label" for="latlng-api-key">LatLng API Key</label>
+    <input
+      id="latlng-api-key"
+      type="text"
+      pInputText
+      [ngModel]="shell.latLngApiKey()"
+      (ngModelChange)="shell.latLngApiKey.set($event)"
+      placeholder="LatLng server key"
+    />
+
+    <label class="form-label" for="temperature-scale">Temperature Scale</label>
+    <select
+      id="temperature-scale"
+      class="input-select"
+      [ngModel]="shell.temperatureScale()"
+      (ngModelChange)="shell.temperatureScale.set($event)"
+    >
+      <option value="Fahrenheit">Fahrenheit</option>
+      <option value="Celsius">Celsius</option>
+    </select>
+
+    <label class="form-label" for="wallpaper-monitor">Wallpaper Monitor</label>
+    <select
+      id="wallpaper-monitor"
+      class="input-select"
+      [ngModel]="shell.wallpaperMonitorDeviceName()"
+      (ngModelChange)="shell.updateWallpaperMonitorDeviceName($event)"
+    >
+      @for (monitor of shell.wallpaperMonitorOptions(); track monitor.deviceName) {
+        <option [value]="monitor.deviceName">{{ monitor.label }}</option>
+      }
+    </select>
+
+    <label class="form-label" for="wallpaper-stats-overlay">Wallpaper Statistics Overlay</label>
+    <div class="toggle-row">
+      <p-toggleswitch
+        inputId="wallpaper-stats-overlay"
+        [ngModel]="shell.showWallpaperStatsOverlay()"
+        (ngModelChange)="shell.updateWallpaperStatsOverlay($event)"
+      />
+      <span class="toggle-caption">
+        Show lower-left rendering statistics on wallpaper
+      </span>
+    </div>
+
+    <div class="action-row">
+      <p-button label="Apply Settings" icon="pi pi-check" (onClick)="shell.applySettings()" />
+      <p-button label="Refresh Now" icon="pi pi-refresh" severity="secondary" (onClick)="shell.refreshNow()" />
+    </div>
+  </div>
+</article>

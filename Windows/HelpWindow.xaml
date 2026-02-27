@@ -1,0 +1,73 @@
+<Window x:Class="Malie.Windows.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Help - Mâlie"
+        Height="760"
+        Width="980"
+        MinHeight="560"
+        MinWidth="760"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock FontSize="20" FontWeight="SemiBold" Text="Setup Guide: Live Active Wallpaper Model" />
+                <TextBlock Margin="0,12,0,0" TextWrapping="Wrap">
+                    <Run Text="Important: closing the main Settings window does not fully exit the app. " />
+                    <Run Text="The app minimizes to the system tray. To quit completely, right-click the tray icon and select Exit." />
+                </TextBlock>
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="1. Set the location" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                           Text="In Settings, enter city/address/ZIP or click Use Current Location to auto-fill from your current network/IP region." />
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="2. Configure API keys" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                           Text="Set required Weather API, Meshy API, and LatLng API keys, then click Apply Settings and Refresh Now." />
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="3. Build the model library" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                           Text="Use Meshy Models to queue/download POIs or import your own GLB files. Set a cached model active when ready." />
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="4. Background and rendering" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                           Text="The wallpaper scene is generated locally using Three.js. Enable the animated background to use a Codex-inspired motion shader." />
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="5. Optional API references" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
+                    <Run Text="WeatherAPI docs: " />
+                    <Hyperlink NavigateUri="https://www.weatherapi.com/docs/" RequestNavigate="OnHyperlinkRequestNavigate">https://www.weatherapi.com/docs/</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="0,4,0,0" TextWrapping="Wrap">
+                    <Run Text="LatLng docs (POI/geocoding): " />
+                    <Hyperlink NavigateUri="https://www.latlng.work/docs" RequestNavigate="OnHyperlinkRequestNavigate">https://www.latlng.work/docs</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="0,4,0,0" TextWrapping="Wrap">
+                    <Run Text="Meshy API docs (optional POI model generation): " />
+                    <Hyperlink NavigateUri="https://docs.meshy.ai/en" RequestNavigate="OnHyperlinkRequestNavigate">https://docs.meshy.ai/en</Hyperlink>
+                </TextBlock>
+
+                <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Text="6. Verify active wallpaper model" />
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                           Text="Use Debug Log and status lines in Settings to confirm refresh progress and rendering updates." />
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Row="1" Margin="0,10,0,0" LastChildFill="False">
+            <TextBlock x:Name="StatusTextBlock"
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"
+                       Foreground="#555555"
+                       Text="Open links directly from this window." />
+            <Button DockPanel.Dock="Right"
+                    Width="96"
+                    Height="30"
+                    Content="Close"
+                    Click="OnCloseClick" />
+        </DockPanel>
+    </Grid>
+</Window>

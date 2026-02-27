@@ -1,0 +1,256 @@
+<div class="meshy-viewer">
+  <div class="viewer-toolbar">
+    <div>
+      <div class="font-semibold">Meshy Cached Model Viewer</div>
+      <div class="text-sm text-color-secondary">Location: {{ location() || '(not set)' }}</div>
+    </div>
+    <div class="toolbar-actions">
+      <p-button
+        label="Refresh POIs"
+        icon="pi pi-map-marker"
+        severity="secondary"
+        [disabled]="isBusy()"
+        pTooltip="Fetch POIs from LatLng for this location"
+        tooltipPosition="top"
+        (onClick)="refreshPoisRequested.emit()"
+      />
+      <p-button
+        label="Refresh List"
+        icon="pi pi-refresh"
+        severity="secondary"
+        [disabled]="isBusy()"
+        pTooltip="Refresh Meshy table and cache state"
+        tooltipPosition="top"
+        (onClick)="refreshRequested.emit()"
+      />
+      <input
+        #importGlbInput
+        type="file"
+        accept=".glb,model/gltf-binary"
+        class="import-glb-hidden-input"
+        (change)="onImportFileSelected($event)"
+      />
+      <p-button
+        label="Import GLB"
+        icon="pi pi-upload"
+        severity="secondary"
+        [disabled]="busyOrImporting()"
+        pTooltip="Import a local GLB into Meshy cache"
+        tooltipPosition="top"
+        (onClick)="openImportPicker(importGlbInput)"
+      />
+    </div>
+  </div>
+
+  <div class="queue-status">{{ queueStatus() }}</div>
+
+  <p-dialog
+    [visible]="importDialogVisible()"
+    [modal]="true"
+    [closable]="false"
+    [closeOnEscape]="false"
+    [draggable]="false"
+    [resizable]="false"
+    [dismissableMask]="false"
+    [style]="{ width: 'min(520px, 95vw)' }"
+    styleClass="meshy-import-dialog-animated"
+    header="Import GLB Model"
+  >
+    <div class="import-dialog-grid">
+      <div class="import-file-name">
+        File:
+        <span class="mono">{{ pendingImportFile()?.name || '(none)' }}</span>
+      </div>
+      <label for="import-poi-name" class="font-semibold">POI Name</label>
+      <input
+        id="import-poi-name"
+        type="text"
+        pInputText
+        [ngModel]="importPoiName()"
+        (ngModelChange)="onImportPoiNameChange($event)"
+        [disabled]="importInProgress()"
+      />
+      <div class="text-xs text-color-secondary">
+        POI names must be unique in the table.
+      </div>
+      @if (importErrorText()) {
+        <div class="import-error">{{ importErrorText() }}</div>
+      }
+      <div class="import-dialog-actions">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          severity="secondary"
+          [disabled]="importInProgress()"
+          (onClick)="closeImportDialog()"
+        />
+        <p-button
+          label="Import"
+          icon="pi pi-check"
+          [disabled]="importInProgress()"
+          (onClick)="confirmImport()"
+        />
+      </div>
+    </div>
+  </p-dialog>
+
+  <div class="rotation-row">
+    <label for="rotation-input">Rotate models every (minutes, 0 = disabled)</label>
+    <div class="rotation-input-row">
+      <p-inputnumber
+        inputId="rotation-input"
+        mode="decimal"
+        [useGrouping]="false"
+        [min]="0"
+        [max]="1440"
+        [step]="0.1"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="3"
+        [ngModel]="rotationInput()"
+        (ngModelChange)="onRotationInputChange($event)"
+        [disabled]="isBusy()"
+      ></p-inputnumber>
+      <p-button
+        label="Apply"
+        icon="pi pi-check"
+        [disabled]="isBusy()"
+        pTooltip="Apply model rotation interval"
+        tooltipPosition="top"
+        (onClick)="onApplyRotation()"
+      />
+    </div>
+  </div>
+
+  <div class="prompt-row">
+    <label for="custom-prompt">Custom Meshy prompt (max {{ customPromptMaxLength() }} chars)</label>
+    <textarea
+      id="custom-prompt"
+      class="prompt-input"
+      [attr.maxlength]="customPromptMaxLength()"
+      [ngModel]="customPrompt()"
+      (ngModelChange)="customPrompt.set($event)"
+      [disabled]="isBusy()"
+    ></textarea>
+    <div class="prompt-footer">
+      <span>{{ customPrompt().length }} / {{ customPromptMaxLength() }}</span>
+      <p-button
+        label="Submit Prompt"
+        icon="pi pi-send"
+        [disabled]="isBusy() || customPrompt().trim().length === 0"
+        pTooltip="Submit custom prompt to Meshy"
+        tooltipPosition="top"
+        (onClick)="onSubmitPrompt()"
+      />
+    </div>
+  </div>
+
+  <div class="table-shell">
+    <table class="models-table">
+      <thead>
+        <tr>
+          <th>POI Name</th>
+          <th>Model File</th>
+          <th>Status</th>
+          <th>Action</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (rows().length === 0) {
+          <tr>
+            <td colspan="5" class="empty-cell">No POIs or cached models yet.</td>
+          </tr>
+        } @else {
+          @for (row of rows(); track row.poiKey + '|' + row.localRelativePath) {
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  pInputText
+                  class="poi-input"
+                  [ngModel]="row.poiName"
+                  (ngModelChange)="onRenamePoi(row, $event)"
+                  [disabled]="isBusy()"
+                />
+              </td>
+              <td class="mono">{{ row.modelFileName }}</td>
+              <td><span [class]="statusClass(row.statusKind)">{{ row.statusText }}</span></td>
+              <td>
+                <div class="action-buttons">
+                  <p-button
+                    icon="pi pi-plus"
+                    [text]="true"
+                    severity="secondary"
+                    [disabled]="!row.canQueue"
+                    pTooltip="Add this POI to the Meshy queue"
+                    tooltipPosition="top"
+                    (onClick)="queuePoiRequested.emit(row.poiName)"
+                  />
+                  <p-button
+                    icon="pi pi-download"
+                    [text]="true"
+                    severity="info"
+                    [disabled]="!row.canDownloadNow"
+                    pTooltip="Download this POI now (priority)"
+                    tooltipPosition="top"
+                    (onClick)="downloadPoiRequested.emit(row.poiName)"
+                  />
+                  <p-button
+                    icon="pi pi-file-export"
+                    [text]="true"
+                    severity="help"
+                    [disabled]="!row.isCachedModel"
+                    pTooltip="Export cached GLB model"
+                    tooltipPosition="top"
+                    (onClick)="exportModelRequested.emit(row.localRelativePath)"
+                  />
+                  <p-button
+                    [icon]="row.isActiveModel ? 'pi pi-check-circle' : 'pi pi-bullseye'"
+                    [text]="true"
+                    severity="success"
+                    [disabled]="isBusy() || !row.isCachedModel || row.isActiveModel"
+                    [pTooltip]="row.isActiveModel ? 'Already active wallpaper model' : 'Set as active wallpaper model'"
+                    tooltipPosition="top"
+                    (onClick)="setActiveModelRequested.emit(row.localRelativePath)"
+                  />
+                </div>
+              </td>
+              <td>
+                <p-button
+                  icon="pi pi-trash"
+                  [text]="true"
+                  severity="danger"
+                  [disabled]="isBusy() || !row.canDelete"
+                  pTooltip="Delete cached model"
+                  tooltipPosition="top"
+                  (onClick)="deleteModelRequested.emit(row.localRelativePath)"
+                />
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="viewer-status">{{ status() }}</div>
+
+  <div class="progress-shell">
+    <div class="progress-header">
+      <span>Meshy Progress</span>
+      <span>{{ normalizedProgressPercent() | number: '1.0-0' }}%</span>
+    </div>
+    <p-progressbar [value]="normalizedProgressPercent()"></p-progressbar>
+    <div class="progress-text">{{ progressText() }}</div>
+  </div>
+
+  <div class="viewer-log">
+    @if (logs().length === 0) {
+      <div class="text-surface-400">No Meshy logs yet.</div>
+    } @else {
+      @for (line of logs(); track $index) {
+        <div class="whitespace-pre-wrap" [class]="logLineClass(line)">{{ line }}</div>
+      }
+    }
+  </div>
+</div>

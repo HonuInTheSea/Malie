@@ -1,0 +1,73 @@
+<Window x:Class="Malie.Windows.GlbOrientationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="GLB Orientation"
+        Height="560"
+        Width="680"
+        MinHeight="440"
+        MinWidth="620"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="0,0,0,10"
+                   TextWrapping="Wrap"
+                   Text="Adjust rotation, scale, and offsets for the default Honolulu GLB scene. Every slider change or manual value entry updates the live wallpaper immediately."
+                   Foreground="#2A2A2A" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="84" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="98" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Rot X" />
+            <Slider x:Name="RotXSlider" Grid.Row="0" Grid.Column="1" Minimum="-180" Maximum="180" TickFrequency="1" SmallChange="1" LargeChange="10" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="RotXValueTextBox" Grid.Row="0" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Rot Y" />
+            <Slider x:Name="RotYSlider" Grid.Row="1" Grid.Column="1" Minimum="-180" Maximum="180" TickFrequency="1" SmallChange="1" LargeChange="10" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="RotYValueTextBox" Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Rot Z" />
+            <Slider x:Name="RotZSlider" Grid.Row="2" Grid.Column="1" Minimum="-180" Maximum="180" TickFrequency="1" SmallChange="1" LargeChange="10" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="RotZValueTextBox" Grid.Row="2" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Scale" />
+            <Slider x:Name="ScaleSlider" Grid.Row="3" Grid.Column="1" Minimum="0.05" Maximum="1.95" TickFrequency="0.05" SmallChange="0.01" LargeChange="0.1" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="ScaleValueTextBox" Grid.Row="3" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Off X" />
+            <Slider x:Name="OffsetXSlider" Grid.Row="4" Grid.Column="1" Minimum="-10" Maximum="10" TickFrequency="0.1" SmallChange="0.05" LargeChange="0.5" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="OffsetXValueTextBox" Grid.Row="4" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Off Y" />
+            <Slider x:Name="OffsetYSlider" Grid.Row="5" Grid.Column="1" Minimum="-10" Maximum="10" TickFrequency="0.1" SmallChange="0.05" LargeChange="0.5" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="OffsetYValueTextBox" Grid.Row="5" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+
+            <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Text="Off Z" />
+            <Slider x:Name="OffsetZSlider" Grid.Row="6" Grid.Column="1" Minimum="-10" Maximum="10" TickFrequency="0.1" SmallChange="0.05" LargeChange="0.5" ValueChanged="OnSliderValueChanged" />
+            <TextBox x:Name="OffsetZValueTextBox" Grid.Row="6" Grid.Column="2" Margin="8,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" LostFocus="OnValueTextBoxCommit" KeyDown="OnValueTextBoxKeyDown" />
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Width="90" Height="30" Margin="0,0,8,0" Content="Reset" Click="OnResetClick" />
+            <Button Width="90" Height="30" Content="Close" Click="OnCloseClick" />
+        </StackPanel>
+    </Grid>
+</Window>

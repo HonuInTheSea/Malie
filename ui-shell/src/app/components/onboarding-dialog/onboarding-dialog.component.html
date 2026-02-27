@@ -1,0 +1,150 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  styleClass="onboarding-dialog-animated"
+  [style]="{ width: 'min(920px, 96vw)' }"
+  [contentStyle]="{ overflow: 'visible' }"
+  header="Initial Configuration"
+>
+  <p-stepper [value]="step()" (valueChange)="onStepValueChange($event)" [linear]="true">
+    <p-step-list>
+      <p-step [value]="1">Location</p-step>
+      <p-step [value]="2">API Keys</p-step>
+      <p-step [value]="3">Meshy Model</p-step>
+      <p-step [value]="4">Tips</p-step>
+    </p-step-list>
+    <p-step-panels>
+      <p-step-panel [value]="1">
+        <ng-template #content>
+          <div class="mt-4 grid gap-3">
+            <label for="onboarding-location" class="form-label">Location</label>
+            <input
+              id="onboarding-location"
+              type="text"
+              pInputText
+              class="w-full"
+              [ngModel]="location()"
+              (ngModelChange)="locationChange.emit($event)"
+              placeholder="City, address, or ZIP"
+            />
+            <div class="action-row">
+              <p-button label="Use Current Location" icon="pi pi-map-marker" severity="secondary" (onClick)="useCurrentLocation.emit()" />
+              <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="next.emit()" />
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="2">
+        <ng-template #content>
+          <div class="mt-4 grid gap-3">
+            <label for="onboarding-meshy" class="form-label">Meshy API key</label>
+            <input
+              id="onboarding-meshy"
+              type="text"
+              pInputText
+              class="w-full"
+              [ngModel]="meshyApiKey()"
+              (ngModelChange)="meshyApiKeyChange.emit($event)"
+            />
+            <a
+              class="key-link"
+              href="https://www.meshy.ai/?utm_source=meshy&utm_medium=referral-program&utm_content=ZEU7XX&share_type=invite-friends"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sign up for Meshy API key (referral link)
+            </a>
+            <p class="referral-note">
+              Referral benefits: invited users can receive one free month of Pro, and there are opportunities for
+              free credits through referral/promotional programs. Terms apply.
+            </p>
+
+            <label for="onboarding-weather" class="form-label">Weather API key</label>
+            <input
+              id="onboarding-weather"
+              type="text"
+              pInputText
+              class="w-full"
+              [ngModel]="weatherApiKey()"
+              (ngModelChange)="weatherApiKeyChange.emit($event)"
+            />
+            <a class="key-link" href="https://www.weatherapi.com/signup.aspx" target="_blank" rel="noopener noreferrer">Sign up for WeatherAPI key</a>
+
+            <label for="onboarding-latlng" class="form-label">LatLng API key</label>
+            <input
+              id="onboarding-latlng"
+              type="text"
+              pInputText
+              class="w-full"
+              [ngModel]="latLngApiKey()"
+              (ngModelChange)="latLngApiKeyChange.emit($event)"
+            />
+            <a class="key-link" href="https://www.latlng.work/" target="_blank" rel="noopener noreferrer">Sign up for LatLng server key</a>
+
+            <div class="action-row">
+              <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" (onClick)="previous.emit()" />
+              <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="next.emit()" />
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="3">
+        <ng-template #content>
+          <div class="mt-4">
+            <app-meshy-model-viewer
+              [location]="location()"
+              [rows]="meshyRows()"
+              [status]="meshyStatus()"
+              [queueStatus]="meshyQueueStatus()"
+              [logs]="meshyLogs()"
+              [rotationMinutes]="meshyRotationMinutes()"
+              [isBusy]="meshyBusy()"
+              [progressPercent]="meshyProgressPercent()"
+              [progressText]="meshyProgressText()"
+              [customPromptMaxLength]="800"
+              (refreshRequested)="meshyRefreshRequested.emit()"
+              (refreshPoisRequested)="onboardingPoisRefreshRequested.emit()"
+              (queuePoiRequested)="meshyQueuePoiRequested.emit($event)"
+              (downloadPoiRequested)="meshyDownloadPoiRequested.emit($event)"
+              (setActiveModelRequested)="meshySetActiveRequested.emit($event)"
+              (exportModelRequested)="meshyExportRequested.emit($event)"
+              (deleteModelRequested)="meshyDeleteRequested.emit($event)"
+              (renamePoiRequested)="meshyRenameRequested.emit($event)"
+              (customPromptRequested)="meshyCustomPromptRequested.emit($event)"
+              (rotationMinutesApplied)="meshyRotationMinutesApplied.emit($event)"
+              (importGlbRequested)="meshyImportRequested.emit($event)"
+            />
+            <div class="action-row mt-2">
+              <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" (onClick)="previous.emit()" />
+              <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="next.emit()" />
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="4">
+        <ng-template #content>
+          <div class="mt-4 space-y-2 text-sm">
+            <p class="m-0"><strong>Tips before finishing:</strong></p>
+            <ul class="tips-list">
+              <li>Refresh POIs when you change location so Meshy downloads are relevant.</li>
+              <li>Use tray icon context menu and select <strong>Exit</strong> to fully close the app.</li>
+              <li>Use Wallpaper settings to tune colors, fonts, and media backgrounds.</li>
+            </ul>
+            <div class="action-row mt-2">
+              <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" (onClick)="previous.emit()" />
+              <p-button label="Finish & Connect Wallpaper" icon="pi pi-check" (onClick)="finish.emit()" />
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</p-dialog>

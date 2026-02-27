@@ -1,0 +1,44 @@
+<section class="content-grid">
+  <article class="panel-card shadow-stroke">
+    <header class="panel-header">
+      <div>
+        <h2 class="panel-title"><i class="pi pi-chart-line"></i> Runtime Status</h2>
+        <p class="panel-subtitle">Current connection and refresh state from the desktop host.</p>
+      </div>
+    </header>
+    <p class="status-line">{{ shell.statusText() }}</p>
+    <p class="muted-line">Last updated: {{ shell.lastUpdatedText() }}</p>
+    <p class="muted-line">Bridge: {{ shell.bridgeStatus() }}</p>
+  </article>
+</section>
+
+<article class="panel-card shadow-stroke">
+  <header class="panel-header compact">
+    <h2 class="panel-title"><i class="pi pi-filter"></i> Debug Filters</h2>
+  </header>
+  <div class="filters-grid">
+    <label><input type="checkbox" [checked]="shell.logFilters().showSystem" (change)="shell.updateLogFilter('showSystem', $any($event.target).checked)" />System</label>
+    <label><input type="checkbox" [checked]="shell.logFilters().showWeather" (change)="shell.updateLogFilter('showWeather', $any($event.target).checked)" />Weather</label>
+    <label><input type="checkbox" [checked]="shell.logFilters().showLatLng" (change)="shell.updateLogFilter('showLatLng', $any($event.target).checked)" />LatLng</label>    <label><input type="checkbox" [checked]="shell.logFilters().showMeshy" (change)="shell.updateLogFilter('showMeshy', $any($event.target).checked)" />Meshy</label>
+    <label><input type="checkbox" [checked]="shell.logFilters().showRendererDebug" (change)="shell.updateLogFilter('showRendererDebug', $any($event.target).checked)" />Renderer Debug</label>
+    <label><input type="checkbox" [checked]="shell.logFilters().showErrors" (change)="shell.updateLogFilter('showErrors', $any($event.target).checked)" />Errors</label>
+  </div>
+</article>
+
+<article class="panel-card shadow-stroke">
+  <header class="panel-header compact">
+    <h2 class="panel-title"><i class="pi pi-list"></i> Debug Log</h2>
+    <p-button label="Clear" icon="pi pi-trash" severity="secondary" (onClick)="shell.clearDebugLog()" />
+  </header>
+  <div class="debug-log">
+    @if (shell.debugLogs().length === 0) {
+      <div class="text-surface-400">No logs yet.</div>
+    } @else {
+      @for (line of shell.debugLogs(); track $index) {
+        <div class="whitespace-pre-wrap">{{ line }}</div>
+      }
+    }
+  </div>
+</article>
+
+
