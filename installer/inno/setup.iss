@@ -18,6 +18,8 @@
 AppId={{6FD34B2B-6A5F-4F64-9282-78E5A65F85C9}
 AppName=Mâlie
 AppVersion={#MyAppVersion}
+AppPublisher=Mâlie
+UninstallDisplayName=Mâlie
 DefaultDirName={autopf}\Malie
 DefaultGroupName=Mâlie
 OutputDir={#MyOutputDir}
@@ -28,6 +30,8 @@ WizardStyle=modern
 PrivilegesRequired=admin
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+Uninstallable=yes
+CreateUninstallRegKey=yes
 UninstallDisplayIcon={app}\Malie.exe
 SetupIconFile={#MyAppIconFile}
 DisableProgramGroupPage=yes
@@ -47,5 +51,27 @@ Name: "{autoprograms}\Mâlie"; Filename: "{app}\Malie.exe"; IconFilename: "{app}
 
 [Run]
 Filename: "{app}\Malie.exe"; Description: "Launch Mâlie"; Flags: nowait postinstall skipifsilent
-[UninstallRun]
-Filename: "{app}\Malie.exe"; Parameters: "--cleanup-user-data"; RunOnceId: "CleanupUserData"; Flags: runhidden waituntilterminated skipifdoesntexist
+
+[Code]
+procedure TryDeleteTree(const APath: string);
+begin
+  if (APath = '') then
+    exit;
+
+  if DirExists(APath) then
+    DelTree(APath, True, True, True);
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  MalieRoot: string;
+  LegacyRoot: string;
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    MalieRoot := ExpandConstant('{localappdata}\Malie');
+    LegacyRoot := ExpandConstant('{localappdata}\IsometricLiveWeatherDesktop');
+    TryDeleteTree(MalieRoot);
+    TryDeleteTree(LegacyRoot);
+  end;
+end;

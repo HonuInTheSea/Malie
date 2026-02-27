@@ -14,15 +14,6 @@
   flex-wrap: wrap;
 }
 
-.selected-models {
-  max-height: 7rem;
-  overflow: auto;
-  border: 1px solid var(--surface-border);
-  border-radius: 0.7rem;
-  padding: 0.55rem;
-  font-size: 0.75rem;
-}
-
 :host .key-link {
   display: inline-block;
   margin-top: -0.2rem;
@@ -35,15 +26,6 @@
   font-size: 0.76rem;
   color: var(--text-muted-color);
   line-height: 1.35;
-}
-
-.poi-list {
-  max-height: 8rem;
-  overflow: auto;
-  border: 1px solid var(--surface-border);
-  border-radius: 0.7rem;
-  padding: 0.55rem;
-  font-size: 0.8rem;
 }
 
 .tips-list {
@@ -59,10 +41,15 @@
 
 :host ::ng-deep .p-dialog-content {
   padding-top: 0.5rem;
+  overflow-y: auto;
 }
 
 :host ::ng-deep .p-stepper {
   background: transparent;
+}
+
+:host ::ng-deep .p-stepper-panels {
+  min-height: 16rem;
 }
 
 :host ::ng-deep .onboarding-dialog-animated.p-dialog-enter-active {
@@ -88,4 +75,13 @@
   }
 }
 
+@media (max-width: 900px) {
+  .action-row {
+    width: 100%;
+  }
+
+  :host ::ng-deep .action-row .p-button {
+    flex: 1;
+  }
+}
 

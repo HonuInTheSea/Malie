@@ -328,6 +328,7 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
     this.onboardingStep.set(nextStep);
     if (nextStep === 3) {
       this.refreshOnboardingPois();
+      this.refreshMeshyManager();
     }
   }
 
@@ -336,8 +337,15 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
   }
 
   onOnboardingStepChange(value: number | undefined): void {
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      this.onboardingStep.set(Math.max(1, Math.min(4, value)));
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      return;
+    }
+
+    const nextStep = Math.max(1, Math.min(4, value));
+    this.onboardingStep.set(nextStep);
+    if (nextStep === 3) {
+      this.refreshOnboardingPois();
+      this.refreshMeshyManager();
     }
   }
 
@@ -353,6 +361,11 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
     this.onboardingDismissed.set(true);
   }
   refreshOnboardingPois(): void {
+    if (!this.ensureMeshyOnboardingDraftApplied('refresh POIs')) {
+      return;
+    }
+
+    this.statusText.set('Refreshing POIs from LatLng...');
     this.postToHost('settings.onboarding.refreshPois', {});
   }
 
@@ -361,10 +374,18 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
   }
 
   queueMeshyPoi(poiName: string): void {
+    if (!this.ensureMeshyOnboardingDraftApplied('queue POI model generation')) {
+      return;
+    }
+
     this.postToHost('settings.meshy.queue', { poiName, prioritize: false });
   }
 
   downloadMeshyPoiNow(poiName: string): void {
+    if (!this.ensureMeshyOnboardingDraftApplied('download POI model')) {
+      return;
+    }
+
     this.postToHost('settings.meshy.queue', { poiName, prioritize: true });
   }
 
@@ -553,6 +574,20 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
     this.postToHost('settings.wallpaperTextStyleChanged', {
       wallpaperTextStyle: this.wallpaperTextStyle()
     });
+  }
+
+
+  private ensureMeshyOnboardingDraftApplied(actionLabel: string): boolean {
+    if (!this.showOnboarding()) {
+      return true;
+    }
+
+    const applied = this.applySettings();
+    if (!applied) {
+      this.statusText.set(`Complete location and API keys before trying to ${actionLabel}.`);
+    }
+
+    return applied;
   }
 
   private buildSettingsPayload(): SettingsPayload | null {
@@ -1123,13 +1158,6 @@ export class App {  private readonly defaultWallpaperTextStyle: WallpaperTextSty
     return Math.max(8, Math.min(144, parsed));
   }
 }
-
-
-
-
-
-
-
 
 
 

@@ -474,6 +474,10 @@ public partial class App : System.Windows.Application
             return;
         }
 
+
+        LogDebug(
+            $"Onboarding POI refresh requested. location='{_locationInput}', latLngKeySet={!string.IsNullOrWhiteSpace(_latLngApiKey)}.",
+            DebugLogCategory.LatLng);
         if (string.IsNullOrWhiteSpace(_locationInput))
         {
             _settingsWindow.SetStatus("Set a location before refreshing POIs.");
@@ -3837,6 +3841,7 @@ public partial class App : System.Windows.Application
         public double GlbOffsetZ { get; init; } = 0;
     }
 }
+
 
 
 

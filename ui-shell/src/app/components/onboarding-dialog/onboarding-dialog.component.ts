@@ -4,11 +4,23 @@ import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputText } from 'primeng/inputtext';
 import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper';
-import { MeshyModelRowEntry, MeshyModelViewerComponent } from '../meshy-model-viewer/meshy-model-viewer.component';
+import { MeshyModelRowEntry } from '../meshy-model-viewer/meshy-model-viewer.component';
+import { OnboardingMeshyStepComponent } from '../onboarding-meshy-step/onboarding-meshy-step.component';
 
 @Component({
   selector: 'app-onboarding-dialog',
-  imports: [FormsModule, Dialog, Button, InputText, Stepper, StepList, Step, StepPanels, StepPanel, MeshyModelViewerComponent],
+  imports: [
+    FormsModule,
+    Dialog,
+    Button,
+    InputText,
+    Stepper,
+    StepList,
+    Step,
+    StepPanels,
+    StepPanel,
+    OnboardingMeshyStepComponent
+  ],
   templateUrl: './onboarding-dialog.component.html',
   styleUrl: './onboarding-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -57,3 +69,4 @@ export class OnboardingDialogComponent {
     }
   }
 }
+

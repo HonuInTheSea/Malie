@@ -1,0 +1,95 @@
+<div class="onboarding-meshy-step">
+  <div class="step-header">
+    <div>
+      <div class="step-title">Download Your First Meshy POI Model</div>
+      <div class="step-subtitle">Location: {{ location() || '(set location in Step 1)' }}</div>
+    </div>
+    <p-button
+      label="Refresh POIs"
+      icon="pi pi-map-marker"
+      severity="secondary"
+      [disabled]="isBusy()"
+      pTooltip="Fetch nearby POIs from LatLng for this location"
+      tooltipPosition="top"
+      (onClick)="refreshPoisRequested.emit()"
+    />
+  </div>
+
+  <ol class="step-guide">
+    <li>Click <strong>Refresh POIs</strong> to load nearby landmarks for your location.</li>
+    <li>Click <strong>Download</strong> to prioritize a POI now, or click <strong>Queue</strong> to add it for processing.</li>
+    <li>Wait until at least one POI shows a cached/ready status, then continue onboarding.</li>
+  </ol>
+
+  <div class="queue-status">{{ queueStatus() }}</div>
+
+  <div class="table-shell">
+    <table class="poi-table">
+      <thead>
+        <tr>
+          <th>POI</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (visiblePois().length === 0) {
+          <tr>
+            <td colspan="3" class="empty-cell">No POIs yet. Refresh POIs after setting location and API keys.</td>
+          </tr>
+        } @else {
+          @for (poi of visiblePois(); track poi.poiName) {
+            <tr>
+              <td class="poi-name">{{ poi.poiName }}</td>
+              <td><span [class]="statusClass(poi.statusKind)">{{ poi.statusText }}</span></td>
+              <td>
+                <div class="action-buttons">
+                  <p-button
+                    icon="pi pi-plus"
+                    [text]="true"
+                    severity="secondary"
+                    [disabled]="!poi.canQueue"
+                    pTooltip="Add POI to Meshy queue"
+                    tooltipPosition="top"
+                    (onClick)="queuePoiRequested.emit(poi.poiName)"
+                  />
+                  <p-button
+                    icon="pi pi-download"
+                    [text]="true"
+                    severity="info"
+                    [disabled]="!poi.canDownloadNow"
+                    pTooltip="Download POI now (priority)"
+                    tooltipPosition="top"
+                    (onClick)="downloadPoiRequested.emit(poi.poiName)"
+                  />
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="status-line">{{ status() }}</div>
+
+  <div class="progress-shell">
+    <div class="progress-header">
+      <span>Meshy progress</span>
+      <span>{{ normalizedProgressPercent() | number: '1.0-0' }}%</span>
+    </div>
+    <p-progressbar [value]="normalizedProgressPercent()"></p-progressbar>
+    <div class="progress-text">{{ progressText() }}</div>
+  </div>
+
+  <div class="logs-shell">
+    @if (recentLogs().length === 0) {
+      <div class="log-placeholder">No Meshy logs yet.</div>
+    } @else {
+      @for (line of recentLogs(); track $index) {
+        <div [class]="logLineClass(line)">{{ line }}</div>
+      }
+    }
+  </div>
+</div>
+
