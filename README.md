@@ -1,8 +1,8 @@
-![Mâlie Logo](Screenshots/malie.png?raw=true)
-
-# Mâlie
+<img src="Screenshots/malie.png?raw=true" alt="Mâlie Logo" width="200"/>
 
 Mâlie is a Windows 11 live wallpaper desktop app.
+
+<img src="Screenshots/Las_Vegas.png?raw=true" alt="Mâlie Logo" width="500"/>
 
 It uses:
 - **Three.js** for local, procedural isometric scene rendering.
