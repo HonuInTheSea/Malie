@@ -1,3 +1,5 @@
+![Mâlie Logo](Screenshots/malie.png?raw=true)
+
 # Mâlie
 
 Mâlie is a Windows 11 live wallpaper desktop app.
