@@ -205,6 +205,7 @@ function New-WixBuildArgs {
         "Product.wxs",
         "InstallerFiles.generated.wxs",
         "-arch", "x64",
+        "-ext", "WixToolset.Util.wixext",
         "-d", "AppSunIconPath=$resolvedAppSunIcon",
         "-d", "ProductVersion=$Version",
         "-o", $msiOutput

@@ -112,7 +112,11 @@ public partial class WallpaperWindow : Window
     {
         try
         {
-            await RendererView.EnsureCoreWebView2Async();
+            var webViewUserDataRoot = AppBranding.GetWebView2UserDataRoot("wallpaper-renderer");
+            Directory.CreateDirectory(webViewUserDataRoot);
+            var webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewUserDataRoot);
+
+            await RendererView.EnsureCoreWebView2Async(webViewEnvironment);
             RendererView.CoreWebView2.ProcessFailed += OnRendererProcessFailed;
             RendererView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             RendererView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;

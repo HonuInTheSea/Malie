@@ -33,4 +33,15 @@ internal static class AppBranding
             return legacyRoot;
         }
     }
+    public static string GetWebView2UserDataRoot(string profileName)
+    {
+        var sanitizedProfile = string.IsNullOrWhiteSpace(profileName)
+            ? "default"
+            : string.Concat(
+                profileName
+                    .Trim()
+                    .Select(ch => Path.GetInvalidFileNameChars().Contains(ch) ? '_' : ch));
+
+        return Path.Combine(GetLocalAppDataRoot(), "cache", "webview2", sanitizedProfile);
+    }
 }

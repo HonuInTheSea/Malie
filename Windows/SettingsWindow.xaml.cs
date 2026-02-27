@@ -2,6 +2,7 @@ using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
+using Malie.Infrastructure;
 using Malie.Interop;
 using Malie.Models;
 using Malie.Services;
@@ -533,7 +534,11 @@ public partial class SettingsWindow : Window
     {
         try
         {
-            await ShellWebView.EnsureCoreWebView2Async();
+            var webViewUserDataRoot = AppBranding.GetWebView2UserDataRoot("settings-shell");
+            Directory.CreateDirectory(webViewUserDataRoot);
+            var webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewUserDataRoot);
+
+            await ShellWebView.EnsureCoreWebView2Async(webViewEnvironment);
             ShellWebView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
             ShellWebView.NavigationCompleted += OnNavigationCompleted;
             ShellWebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;

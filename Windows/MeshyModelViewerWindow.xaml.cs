@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Malie.Infrastructure;
 using Malie.Models;
 using Malie.Services;
 using Microsoft.Web.WebView2.Core;
@@ -130,7 +131,11 @@ public partial class MeshyModelViewerWindow : Window
             return;
         }
 
-        await ViewerWebView.EnsureCoreWebView2Async();
+        var webViewUserDataRoot = AppBranding.GetWebView2UserDataRoot("meshy-viewer");
+        Directory.CreateDirectory(webViewUserDataRoot);
+        var webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewUserDataRoot);
+
+        await ViewerWebView.EnsureCoreWebView2Async(webViewEnvironment);
         ViewerWebView.NavigationCompleted += OnViewerNavigationCompleted;
         ViewerWebView.CoreWebView2.WebMessageReceived += OnViewerWebMessageReceived;
         ViewerWebView.CoreWebView2.WebResourceRequested += OnViewerWebResourceRequested;

@@ -102,6 +102,13 @@ public partial class App : System.Windows.Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        if (HasSwitch(e.Args, "--cleanup-user-data"))
+        {
+            TryCleanupUserDataArtifacts();
+            Environment.Exit(0);
+            return;
+        }
+
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -3475,6 +3482,37 @@ public partial class App : System.Windows.Application
         {
             return string.Empty;
         }
+    }
+
+
+
+
+    private static bool HasSwitch(string[] args, string value)
+    {
+        if (args is null || args.Length == 0 || string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        return args.Any(arg => string.Equals(arg?.Trim(), value, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static void TryCleanupUserDataArtifacts()
+    {
+        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        if (!string.IsNullOrWhiteSpace(localAppData))
+        {
+            var brandedRoot = Path.Combine(localAppData, AppBranding.SafeName);
+            var legacyRoot = Path.Combine(localAppData, AppBranding.LegacySafeName);
+            TryDeleteDirectory(brandedRoot);
+            if (!string.Equals(brandedRoot, legacyRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                TryDeleteDirectory(legacyRoot);
+            }
+        }
+
+
+
     }
 
     private static void TryDeleteFile(string path)

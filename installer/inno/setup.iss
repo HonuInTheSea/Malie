@@ -31,6 +31,9 @@ ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\Malie.exe
 SetupIconFile={#MyAppIconFile}
 DisableProgramGroupPage=yes
+CloseApplications=yes
+CloseApplicationsFilter=Malie.exe
+RestartApplications=no
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop icon"; GroupDescription: "Additional icons:"
@@ -44,3 +47,5 @@ Name: "{autoprograms}\Mâlie"; Filename: "{app}\Malie.exe"; IconFilename: "{app}
 
 [Run]
 Filename: "{app}\Malie.exe"; Description: "Launch Mâlie"; Flags: nowait postinstall skipifsilent
+[UninstallRun]
+Filename: "{app}\Malie.exe"; Parameters: "--cleanup-user-data"; RunOnceId: "CleanupUserData"; Flags: runhidden waituntilterminated skipifdoesntexist
